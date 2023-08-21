@@ -1,18 +1,19 @@
 import {Animated, PanResponder, View, useWindowDimensions} from 'react-native';
-import React, {useRef} from 'react';
+import React, {useRef, useState} from 'react';
 import Card from './Card';
 
 export default function MobilePay() {
   const card = [
-    {color: '#999'},
-    {color: '#aaa'},
-    {color: '#bbb'},
-    {color: '#ccc'},
-    {color: '#ddd'},
-    {color: '#eee'},
+    {color: '#999', xAnim: useRef(new Animated.Value(0)).current},
+    {color: '#aaa', xAnim: useRef(new Animated.Value(0)).current},
+    {color: '#bbb', xAnim: useRef(new Animated.Value(0)).current},
+    {color: '#ccc', xAnim: useRef(new Animated.Value(0)).current},
+    {color: '#ddd', xAnim: useRef(new Animated.Value(0)).current},
+    {color: '#eee', xAnim: useRef(new Animated.Value(0)).current},
   ];
 
   const cardRef = useRef<'fold' | 'unfold'>('fold');
+  const [focus, setFocus] = useState(card.length - 1);
   const {width} = useWindowDimensions();
 
   const yAnim = useRef(new Animated.Value(0)).current;
@@ -26,6 +27,9 @@ export default function MobilePay() {
       const xSlider = Math.abs(dy) < Math.abs(dx);
 
       if (xSlider) {
+        if (dx < -5 && cardRef.current === 'fold') {
+          card[focus].xAnim.setValue(dx);
+        }
       } else {
         if (dy > 5 && dy < 100 && cardRef.current === 'fold') {
           yAnim.setValue(dy);
@@ -46,6 +50,39 @@ export default function MobilePay() {
       const xSlider = Math.abs(dy) < Math.abs(dx);
 
       if (xSlider) {
+        if (dx < -5 && cardRef.current === 'fold') {
+          if (focus > 0) {
+            Animated.timing(card[focus].xAnim, {
+              toValue: -600,
+              duration: 300,
+              useNativeDriver: false,
+            }).start(({finished}) => {
+              if (finished) {
+                setFocus(prev => prev - 1);
+              }
+            });
+          } else {
+            Animated.timing(card[focus].xAnim, {
+              toValue: 0,
+              duration: 300,
+              useNativeDriver: false,
+            }).start();
+          }
+        }
+
+        if (dx > 5 && cardRef.current === 'fold') {
+          if (focus < card.length - 1) {
+            Animated.timing(card[focus + 1].xAnim, {
+              toValue: 0,
+              duration: 300,
+              useNativeDriver: false,
+            }).start(({finished}) => {
+              if (finished) {
+                setFocus(prev => prev + 1);
+              }
+            });
+          }
+        }
       } else {
         if (dy > 5 && cardRef.current === 'unfold') {
           Animated.timing(rotateZAnim, {
@@ -99,6 +136,9 @@ export default function MobilePay() {
               bgColor={item.color}
               animStyle={{
                 transform: [
+                  {
+                    translateX: item.xAnim,
+                  },
                   {
                     translateY: translateY,
                   },
