@@ -4,12 +4,36 @@ import Card from './Card';
 
 export default function MobilePay() {
   const card = [
-    {color: '#999', xAnim: useRef(new Animated.Value(0)).current},
-    {color: '#aaa', xAnim: useRef(new Animated.Value(0)).current},
-    {color: '#bbb', xAnim: useRef(new Animated.Value(0)).current},
-    {color: '#ccc', xAnim: useRef(new Animated.Value(0)).current},
-    {color: '#ddd', xAnim: useRef(new Animated.Value(0)).current},
-    {color: '#eee', xAnim: useRef(new Animated.Value(0)).current},
+    {
+      color: '#999',
+      xAnim: useRef(new Animated.Value(0)).current,
+      imagePath: require('../assets/Card0.png'),
+    },
+    {
+      color: '#aaa',
+      xAnim: useRef(new Animated.Value(0)).current,
+      imagePath: require('../assets/Card1.png'),
+    },
+    {
+      color: '#bbb',
+      xAnim: useRef(new Animated.Value(0)).current,
+      imagePath: require('../assets/Card2.png'),
+    },
+    {
+      color: '#ccc',
+      xAnim: useRef(new Animated.Value(0)).current,
+      imagePath: require('../assets/Card3.png'),
+    },
+    {
+      color: '#ddd',
+      xAnim: useRef(new Animated.Value(0)).current,
+      imagePath: require('../assets/Card4.png'),
+    },
+    {
+      color: '#eee',
+      xAnim: useRef(new Animated.Value(0)).current,
+      imagePath: require('../assets/Card5.png'),
+    },
   ];
 
   const cardRef = useRef<'fold' | 'unfold'>('fold');
@@ -133,7 +157,6 @@ export default function MobilePay() {
             <Card
               key={index}
               index={index}
-              bgColor={item.color}
               animStyle={{
                 transform: [
                   {
@@ -150,6 +173,7 @@ export default function MobilePay() {
                   },
                 ],
               }}
+              imagePath={item.imagePath}
             />
           );
         })}
