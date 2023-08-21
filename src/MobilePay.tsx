@@ -22,7 +22,7 @@ export default function MobilePay() {
           height: width * 0.7 * 0.58 + (card.length - 1) * 20,
         }}>
         {card.map((item, index) => {
-          return <Card index={index} bgColor={item.color} />;
+          return <Card key={index} index={index} bgColor={item.color} />;
         })}
       </View>
     </View>
