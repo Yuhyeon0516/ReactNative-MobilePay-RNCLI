@@ -1,5 +1,6 @@
 import {
   Animated,
+  Image,
   Platform,
   StyleProp,
   ViewStyle,
@@ -9,11 +10,11 @@ import React from 'react';
 
 interface CardPropsType {
   index: number;
-  bgColor: string;
   animStyle: StyleProp<ViewStyle>;
+  imagePath: any;
 }
 
-export default function Card({index, bgColor, animStyle}: CardPropsType) {
+export default function Card({index, animStyle, imagePath}: CardPropsType) {
   const {width} = useWindowDimensions();
   const shadowStyle: StyleProp<ViewStyle> =
     Platform.OS === 'android'
@@ -35,14 +36,18 @@ export default function Card({index, bgColor, animStyle}: CardPropsType) {
         {
           position: 'absolute',
           marginTop: index * 20,
-          backgroundColor: bgColor,
+          // backgroundColor: bgColor,
           borderRadius: 8,
           width: width * 0.7,
           height: width * 0.7 * 0.58,
         },
         shadowStyle,
         animStyle,
-      ]}
-    />
+      ]}>
+      <Image
+        source={imagePath}
+        style={{width: '100%', height: '100%', borderRadius: 8}}
+      />
+    </Animated.View>
   );
 }
