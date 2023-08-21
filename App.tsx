@@ -6,9 +6,10 @@
  */
 
 import React from 'react';
+import MobilePay from './src/MobilePay';
 
 function App(): JSX.Element {
-  return <></>;
+  return <MobilePay />;
 }
 
 export default App;
