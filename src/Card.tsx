@@ -1,7 +1,7 @@
 import {
+  Animated,
   Platform,
   StyleProp,
-  View,
   ViewStyle,
   useWindowDimensions,
 } from 'react-native';
@@ -10,9 +10,10 @@ import React from 'react';
 interface CardPropsType {
   index: number;
   bgColor: string;
+  animStyle: StyleProp<ViewStyle>;
 }
 
-export default function Card({index, bgColor}: CardPropsType) {
+export default function Card({index, bgColor, animStyle}: CardPropsType) {
   const {width} = useWindowDimensions();
   const shadowStyle: StyleProp<ViewStyle> =
     Platform.OS === 'android'
@@ -29,7 +30,7 @@ export default function Card({index, bgColor}: CardPropsType) {
         };
 
   return (
-    <View
+    <Animated.View
       style={[
         {
           position: 'absolute',
@@ -40,6 +41,7 @@ export default function Card({index, bgColor}: CardPropsType) {
           height: width * 0.7 * 0.58,
         },
         shadowStyle,
+        animStyle,
       ]}
     />
   );
