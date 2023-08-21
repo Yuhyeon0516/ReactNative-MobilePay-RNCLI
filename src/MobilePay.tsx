@@ -21,49 +21,59 @@ export default function MobilePay() {
   const panRes = PanResponder.create({
     onMoveShouldSetPanResponder: () => true,
     onPanResponderMove: (_, gestureState) => {
-      const {dy} = gestureState;
+      const {dy, dx} = gestureState;
 
-      if (dy > 5 && dy < 100 && cardRef.current === 'fold') {
-        yAnim.setValue(dy);
-      }
+      const xSlider = Math.abs(dy) < Math.abs(dx);
 
-      if (dy > 5 && dy < 100 && cardRef.current === 'unfold') {
-        rotateZAnim.setValue(dy);
-      }
+      if (xSlider) {
+      } else {
+        if (dy > 5 && dy < 100 && cardRef.current === 'fold') {
+          yAnim.setValue(dy);
+        }
 
-      if (dy < -5 && dy > -60 && cardRef.current === 'unfold') {
-        yAnim.setValue(60 + dy);
+        if (dy > 5 && dy < 100 && cardRef.current === 'unfold') {
+          rotateZAnim.setValue(dy);
+        }
+
+        if (dy < -5 && dy > -60 && cardRef.current === 'unfold') {
+          yAnim.setValue(60 + dy);
+        }
       }
     },
     onPanResponderEnd: (_, gestureState) => {
-      const {dy} = gestureState;
+      const {dy, dx} = gestureState;
 
-      if (dy > 5 && cardRef.current === 'unfold') {
-        Animated.timing(rotateZAnim, {
-          toValue: 0,
-          duration: 300,
-          useNativeDriver: false,
-        }).start();
-      }
+      const xSlider = Math.abs(dy) < Math.abs(dx);
 
-      if (dy > 5) {
-        Animated.timing(yAnim, {
-          toValue: 60,
-          duration: 300,
-          useNativeDriver: false,
-        }).start();
+      if (xSlider) {
+      } else {
+        if (dy > 5 && cardRef.current === 'unfold') {
+          Animated.timing(rotateZAnim, {
+            toValue: 0,
+            duration: 300,
+            useNativeDriver: false,
+          }).start();
+        }
 
-        cardRef.current = 'unfold';
-      }
+        if (dy > 5) {
+          Animated.timing(yAnim, {
+            toValue: 60,
+            duration: 300,
+            useNativeDriver: false,
+          }).start();
 
-      if (dy < -5) {
-        Animated.timing(yAnim, {
-          toValue: 0,
-          duration: 300,
-          useNativeDriver: false,
-        }).start();
+          cardRef.current = 'unfold';
+        }
 
-        cardRef.current = 'fold';
+        if (dy < -5) {
+          Animated.timing(yAnim, {
+            toValue: 0,
+            duration: 300,
+            useNativeDriver: false,
+          }).start();
+
+          cardRef.current = 'fold';
+        }
       }
     },
   });
